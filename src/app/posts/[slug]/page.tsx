@@ -11,6 +11,9 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import remarkFlexibleToc, { type TocItem } from "remark-flexible-toc";
 import RemarkFlexibleToc from "remark-flexible-toc";
 import { TableOfContents } from "@/features/posts/components/table-of-contents";
+
+export const dynamic = "force-dynamic";
+
 type Scope = {
   toc?: TocItem[];
 };

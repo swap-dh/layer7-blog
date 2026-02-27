@@ -1,15 +1,15 @@
- 
 import { promises as fs } from "fs";
 import path from "path";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { evaluate } from "next-mdx-remote-client/rsc";
 import { PostFrontmatter } from "@/features/posts/types/post";
-import Image from "next/image";
- 
+
+export const dynamic = "force-dynamic";
+
 const PostsPage = async () => {
   const postFileNames = await fs.readdir(path.join(process.cwd(), "src/data/posts"));
- 
+
   const posts = await Promise.all(
     postFileNames
       .filter((filename) => filename.endsWith(".mdx"))
@@ -28,15 +28,25 @@ const PostsPage = async () => {
         };
       }),
   );
+
   return (
     <div className="container mx-auto py-8 px-3">
-      <h1 className="text-3xl font-bold mb-8">블로그 포스트</h1>
+      <h1 className="text-3xl font-bold mb-8">Blog List</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <Link key={post.id} href={post.path}>
             <Card className="hover:border-amber-500 h-full flex justify-between flex-col">
               <CardHeader>
-                {post.thumbnail && <CardTitle><Image src={post.thumbnail} alt={post.title} width={400} height={200} className="w-full h-48 object-cover" /></CardTitle>}
+                {post.thumbnail && (
+                  <div className="relative w-full h-56 overflow-hidden rounded-md border bg-muted/20">
+                    <img
+                      src={post.thumbnail}
+                      alt={post.thumbnailAlt || post.title}
+                      className="h-full w-full object-contain p-2"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
                 <CardTitle>{post.title}</CardTitle>
                 <CardDescription>{post.description}</CardDescription>
               </CardHeader>
@@ -52,8 +62,6 @@ const PostsPage = async () => {
       </div>
     </div>
   );
- 
 };
- 
+
 export default PostsPage;
- 
