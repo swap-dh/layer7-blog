@@ -134,7 +134,7 @@ code [data-highlighted-line] {
   text-decoration: none;
   position: relative;
   transition: color 0.2s ease;
-  color: oklch(0% 0 0);
+  color: var(--foreground);
 }
  
 .heading-link:hover {
