@@ -161,6 +161,7 @@ async function main() {
 
   let writtenCount = 0;
   let skippedCount = 0;
+  let deletedCount = 0;
 
   for (const page of pages) {
     if (page.archived) {
@@ -170,15 +171,28 @@ async function main() {
 
     const props = page.properties;
     const publishedProp = props.published;
+    const titleProp = getPropertyByNameOrType(props, "title", "title");
+    const title = getPlainText(titleProp);
+    const slug = getPlainText(props.slug) || slugify(title);
+
     if (publishedProp && !getCheckbox(publishedProp, true)) {
+      if (slug) {
+        const filePath = path.join(outputDir, `${slug}.mdx`);
+        try {
+          await fs.unlink(filePath);
+          deletedCount += 1;
+          console.log(`Deleted: ${path.relative(process.cwd(), filePath)}`);
+        } catch (error) {
+          // 파일이 없으면 무시
+          if (error?.code !== "ENOENT") {
+            throw error;
+          }
+        }
+      }
       skippedCount += 1;
       continue;
     }
-
-    const titleProp = getPropertyByNameOrType(props, "title", "title");
-    const title = getPlainText(titleProp);
     const description = getPlainText(props.description);
-    const slug = getPlainText(props.slug) || slugify(title);
     const category = getPlainText(props.category) || "general";
     const thumbnail = getPlainText(props.thumbnail);
     const thumbnailAlt = getPlainText(props.thumbnailAlt);
