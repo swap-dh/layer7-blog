@@ -21,8 +21,8 @@ const AboutPage = () => {
         <CardContent>
           <p className="text-muted-foreground mb-2">문의사항이나 제안사항이 있으시면 언제든 연락 주세요.</p>
           <div className="space-y-1">
-            <p>📧 Email: magnolia@layer7.kr</p>
-            <p>📞 Number: (+82) 010-4196-7139</p>
+            <p>부장 (유승주):<br></br> 📧 Email: magnolia@layer7.kr<br></br>📞 Number: (+82) 010-4196-7139</p>
+            <p>김세중 (부부장):<br></br> 📧 Email : 0uyl@layer7.kr<br></br>📞 Number: (+82) 010-2142-5063</p>
           </div>
         </CardContent>
       </Card>
