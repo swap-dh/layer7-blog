@@ -20,7 +20,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV HOSTNAME=0.0.0.0
-ENV PORT=3000
+ENV PORT=2368
 
 RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
 
@@ -34,6 +34,6 @@ COPY --from=prod-deps /app/node_modules ./node_modules
 RUN chown -R nextjs:nodejs /app && chmod +x /app/docker/start.sh
 
 USER nextjs
-EXPOSE 3000
+EXPOSE 2368
 
 CMD ["./docker/start.sh"]

@@ -72,6 +72,24 @@ function getPlainText(prop) {
   return "";
 }
 
+function getFileUrl(prop) {
+  if (!prop || prop.type !== "files" || !Array.isArray(prop.files) || prop.files.length === 0) {
+    return "";
+  }
+
+  const [firstFile] = prop.files;
+
+  if (firstFile?.type === "external") {
+    return (firstFile.external?.url ?? "").trim();
+  }
+
+  if (firstFile?.type === "file") {
+    return (firstFile.file?.url ?? "").trim();
+  }
+
+  return "";
+}
+
 function getPropertyByNameOrType(props, propertyName, propertyType) {
   if (props[propertyName]) {
     return props[propertyName];
@@ -194,7 +212,7 @@ async function main() {
     }
     const description = getPlainText(props.description);
     const category = getPlainText(props.category) || "general";
-    const thumbnail = getPlainText(props.thumbnail);
+    const thumbnail = getFileUrl(props.thumbnail) || getPlainText(props.thumbnail);
     const thumbnailAlt = getPlainText(props.thumbnailAlt);
     const tags = getTags(props.tags);
     const draft = getCheckbox(props.draft, false);
